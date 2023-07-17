@@ -2,13 +2,14 @@ import requests
 import pandas as pd
 from sqlalchemy import create_engine
 
-# Define la URL y los parámetros
+# Define la URL de la API a consultar
 url = "https://api.etherscan.io/api"
 
+#Completamos con los datos de Conexion y Que buscamos
 parametros_ultimo_bloque = {
   "module": "proxy",
   "action": "eth_blockNumber",
-  "apikey": "3XKGEHIXCRBD58B8K1GY9YRT7KDHG95Y3F"  # Reemplaza con tu clave API
+  "apikey": "3XKGEHIXCRBD58B8K1GY9YRT7KDHG95Y3F"
 }
 
 # Realiza la solicitud para obtener el número del último bloque
@@ -93,5 +94,5 @@ connection.execute(create_table_query)
 with engine.connect() as connection:
   connection.execute(create_table_query)
 
-# Usa pandas para escribir los datos del DataFrame a la base de datos
+# Usa pandas para escribir los datos del DataFrame a la base de datos , EN PROCESO
 df.to_sql('entregable_1', con=engine, if_exists='append', index=False)
