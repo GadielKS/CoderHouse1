@@ -77,6 +77,9 @@ for city in cities:
             # Create a DataFrame with that data
             df = pd.DataFrame([filtered_data])
 
+            # Drop duplicates based on observation_time and city
+            df.drop_duplicates(subset=['observation_time', 'city'], inplace=True)
+
             # Convert the DataFrame to a list of dictionaries
             data_to_insert = df.to_dict(orient='records')
 
@@ -92,7 +95,8 @@ for city in cities:
                     try:
                         select_query = f"""SELECT * FROM weather_data WHERE observation_time='{data['observation_time']}' AND city='{data['city']}'"""
                         connection.execute(select_query)
-                        result = connection.fetchone()
+                        result_proxy = connection.execute(select_query)
+                        result = result_proxy.fetchone()
                         if result is None:  # no duplicate, we can insert      
                         # Insert the data
                           connection.execute(insert_statement, list(data.values()))
@@ -108,4 +112,3 @@ for city in cities:
 
     except Exception as e:
         print(f"Unexpected error: {str(e)}")
-
